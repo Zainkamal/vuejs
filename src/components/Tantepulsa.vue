@@ -122,19 +122,25 @@ watchEffect(() => {
             <option value="M3">M3</option>
           </select>
           <h3>NO.hp</h3>
-          <input
-            v-model="data.no_hp"
-            class="text"
-            type="text"
-            placeholder="Masukkan No.Hp"
-          />
+          <div class="input-group mb-3">
+            <span class="input-group-text">Rp</span>
+            <input
+              type="text"
+              v-model="data.no_hp"
+              class="form-control"
+              aria-label="Dollar amount (with dot and two decimal places)"
+            />
+          </div>
           <h3>Nominal Pulsa</h3>
-          <input
-            v-model="data.nominal"
-            class="input"
-            type="number"
-            placeholder="Masukkan Nominal pulsa"
-          />
+          <div class="input-group mb-3">
+            <span class="input-group-text">+62</span>
+            <input
+              type="number"
+              v-model="data.nominal"
+              class="form-control"
+              aria-label="Dollar amount (with dot and two decimal places)"
+            />
+          </div>
           <h3>Catatan</h3>
           <textarea
             v-model="data.catatan"

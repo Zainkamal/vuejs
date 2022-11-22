@@ -1,8 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Cv from "../components/Vitai.vue"
 import Home from "../router/Homenavigator.vue"
-import Pulsa from "../components/Mamapulsa.vue"
-import Contak from "../components/Contak.vue"
+import Pulsa from "../components/Tantepulsa.vue"
+import Contak from "../components/Perpusbuku.vue"
 //dibawah ini import halamannya
 
 const routes = [
