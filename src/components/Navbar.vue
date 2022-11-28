@@ -23,7 +23,10 @@
             <router-link to="/Pulsa">Projeck</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/Contak">Perpustakaan</router-link>
+            <router-link to="/Perpus">Perpustakaan</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/databuku">Databuku</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/list">List</router-link>

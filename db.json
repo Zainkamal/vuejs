@@ -1,0 +1,100 @@
+{
+  "users": [
+    {
+      "name": "Samsung galaxy A10s",
+      "hobi": "hilling",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/577.jpg",
+      "createdAt": "2022-11-25T22:59:09.546Z",
+      "id": "dJpUSga"
+    },
+    {
+      "name": "fadil",
+      "hobi": "homo",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1200.jpg",
+      "createdAt": "2022-11-25T13:32:48.881Z",
+      "id": "AzkAZwm"
+    },
+    {
+      "name": "fadil",
+      "hobi": "hilling",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/884.jpg",
+      "createdAt": "2022-11-25T10:08:05.392Z",
+      "id": "GpZW-qE"
+    },
+    {
+      "name": "slebwe",
+      "hobi": "hilling",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/322.jpg",
+      "createdAt": "2022-11-26T15:13:37.016Z",
+      "id": "EcvJJ3s"
+    },
+    {
+      "name": "Milfin zainul asiqin",
+      "hobi": "hilling",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/690.jpg",
+      "createdAt": "2022-11-26T04:25:54.315Z",
+      "id": "VO6a58Z"
+    },
+    {
+      "name": "slebwe",
+      "hobi": "homo",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1141.jpg",
+      "createdAt": "2022-11-27T15:05:49.932Z",
+      "id": "0nkR71m"
+    },
+    {
+      "name": "rocky",
+      "hobi": "homo",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1137.jpg",
+      "createdAt": "2022-11-27T14:14:33.961Z",
+      "id": "gNwMyh2"
+    }
+  ],
+  "buku": [
+    {
+      "judul": "yuvvi",
+      "penulis": "gigi",
+      "cover": "https://loremflickr.com/200/300/abstract?lock=75245",
+      "katagori": [
+        "novel",
+        "artikel",
+        "komik"
+      ],
+      "id": 1,
+      "kategori": true
+    },
+    {
+      "judul": "tes",
+      "penulis": "tes",
+      "cover": "https://loremflickr.com/200/300/abstract?lock=62071",
+      "katagori": [
+        "novel",
+        "komik",
+        "artikel"
+      ],
+      "id": 4,
+      "kategori": false
+    },
+    {
+      "judul": "slebew",
+      "penulis": "dskgsdkug",
+      "cover": "https://loremflickr.com/200/300/abstract?lock=16015",
+      "katagori": [
+        "artikel",
+        "majalah",
+        "komik"
+      ],
+      "id": 5
+    },
+    {
+      "judul": "hujan debu",
+      "penulis": "fadil",
+      "cover": "https://loremflickr.com/200/300/abstract?lock=66201",
+      "katagori": [
+        "novel",
+        "majalah"
+      ],
+      "id": 6
+    }
+  ]
+}

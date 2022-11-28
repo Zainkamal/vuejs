@@ -1,5 +1,5 @@
 <script>
-import { reactive, toRefs } from "vue";
+import { reactive } from "vue";
 
 export default {
   async setup() {
@@ -9,8 +9,7 @@ export default {
 
     const result = await fetch("https://jsonplaceholder.typicode.com/posts");
     data.list = await result.json();
-    // console.log("data", data);
-    return { ...toRefs(data) };
+    //console.log("data", data);
   },
 };
 </script>

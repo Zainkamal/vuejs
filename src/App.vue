@@ -3,6 +3,7 @@
 // import Awal from "./router/Tampilan_awal.vue";
 import Home from "./router/Homenavigator.vue";
 import Navbar from "./components/Navbar.vue";
+import { RouterView } from "vue-router";
 
 // import { computed, reactive, ref, watchEffect } from "vue";
 // // page1, page2, page3
@@ -80,7 +81,8 @@ import Navbar from "./components/Navbar.vue";
   <!-- <Child/> -->
   <!-- <Awal/> -->
   <Navbar />
-  <router-view />
+  <RouterView />
+
   <!-- <Cv/> -->
   <!-- <router-view></router-view> -->
   <!-- {{ selectForm }}

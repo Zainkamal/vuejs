@@ -1,5 +1,7 @@
 <script setup>
 import { computed, reactive, watchEffect } from "vue";
+import * as Yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 const databuku = reactive({
   data: JSON.parse(localStorage.getItem("buku") || "[]"),
   selected: null,
@@ -15,33 +17,43 @@ const databuku = reactive({
   },
 });
 // Menambah data
-function add() {
+const add = (values, { resetForm }) => {
   if (databuku.mode === "add") {
     databuku.data.unshift({
       id: Math.random(),
       tanggal: new Date().toISOString(),
-      namabuku: databuku.namabuku,
-      Author: databuku.Author,
+      namabuku: values.namabuku,
+      Author: values.Author,
       Katagori: databuku.Katagori,
       status: "Tersedia",
     });
+    resetForm();
     reset();
   } else {
     const i = databuku.data.findIndex((o) => o.id === databuku.selected.id);
     databuku.data[i] = {
       ...databuku.selected,
       tanggal: databuku.tanggal,
-      namabuku: databuku.namabuku,
-      Author: databuku.Author,
+      namabuku: values.namabuku,
+      Author: values.Author,
       Katagori: databuku.Katagori,
       status: databuku.status,
     };
+    resetForm();
     reset();
   }
-}
+};
 // const tampilkandata = computed(() => {
 //   return databuku.data;
 // });
+const schema = Yup.object().shape({
+  namabuku: Yup.string()
+    .required("Nama buku wajib di isi")
+    .typeError("Nama buku wajib di isi"),
+  Author: Yup.string()
+    .required("Author wajib di isi")
+    .typeError("Author wajib di isi"),
+});
 const filter = computed(() => {
   return databuku.data.filter((item) => {
     if (databuku.cari.Katagori) {
@@ -55,7 +67,7 @@ const filter = computed(() => {
       }
     }
     if (databuku.cari.nama) {
-      if (!item.namabuku.startsWith(databuku.cari.nama)) {
+      if (!item.namabuku.match(databuku.cari.nama)) {
         return false;
       }
     }
@@ -98,30 +110,36 @@ watchEffect(() => {
   <main>
     <div class="left">
       <div class="form">
-        <form action="" @submit.prevent="add">
-          <div class="mb-3">
-            <label for="formGroupExampleInput" class="form-label"
-              >Nama Buku :</label
-            >
-            <input
-              type="text"
-              v-model="databuku.namabuku"
-              class="form-control"
-              id="formGroupExampleInput"
-              placeholder="input Nama Buku"
-            />
-          </div>
+        <Form @submit="add" :validation-schema="schema" v-slot="{ errors }">
+          <label for="formGroupExampleInput" class="form-label"
+            >Nama Buku :</label
+          >
+          <Field
+            type="text"
+            v-model="databuku.namabuku"
+            :class="{ 'is-invalid': errors.namabuku }"
+            name="namabuku"
+            id="namabuku"
+            class="form-control"
+            placeholder="input Nama Buku"
+          >
+          </Field>
+          <ErrorMessage name="namabuku" class="invalid-feedback"></ErrorMessage>
           <div class="mb-3">
             <label for="formGroupExampleInput2" class="form-label"
               >Author :</label
             >
-            <input
+            <Field
               type="text"
               v-model="databuku.Author"
               class="form-control"
-              id="formGroupExampleInput2"
+              id="Author"
+              name="Author"
+              :class="{ 'is-invalid': errors.Author }"
               placeholder="input Author"
-            />
+            >
+            </Field>
+            <ErrorMessage name="Author" class="invalid-feedback"></ErrorMessage>
           </div>
           <label for="">Katagori Buku:</label><br />
           <div class="form-check form-check-inline">
@@ -252,7 +270,7 @@ watchEffect(() => {
           <button v-if="databuku.mode === 'edit'" @click="initdata()">
             Batal
           </button>
-        </form>
+        </Form>
       </div>
     </div>
     <div class="right">
@@ -267,7 +285,7 @@ watchEffect(() => {
           aria-label="Default select example"
           v-model="databuku.cari.Katagori"
         >
-          <option selected>Katagori Buku</option>
+          <option value="">Katagori Buku</option>
           <option value="Novel">Novel</option>
           <option value="Majalah">Majalah</option>
           <option value="Kamus">Kamus</option>
@@ -282,10 +300,23 @@ watchEffect(() => {
           aria-label="Default select example"
           v-model="databuku.cari.status"
         >
-          <option selected>Status Buku</option>
+          <option value="">Status Buku</option>
           <option value="Dipinjam">Dipinjam</option>
           <option value="Tersedia">Tersedia</option>
         </select>
+        <button
+          @click="
+            databuku.cari.nama = '';
+            databuku.cari.Katagori = '';
+            databuku.cari.status = '';
+          "
+          class="btn-secondary"
+          v-if="
+            databuku.cari.nama || databuku.cari.Katagori || databuku.cari.status
+          "
+        >
+          Reset
+        </button>
       </div>
       <div class="bottom">
         <table class="table">

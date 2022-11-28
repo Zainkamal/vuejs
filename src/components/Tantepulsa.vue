@@ -1,5 +1,7 @@
 <script setup>
 import { computed, reactive, watchEffect } from "vue";
+import * as Yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 const data = reactive({
   data: JSON.parse(localStorage.getItem("isi") || "[]"),
   provider: null,
@@ -16,43 +18,60 @@ const data = reactive({
     status: "",
   },
 });
-function tambah() {
+const tambah = (values, { resetForm }) => {
   if (data.mode === "add") {
     data.data.unshift({
       id: Math.random(),
       tanggal: new Date().toISOString(),
-      provider: data.provider,
-      no_hp: data.no_hp,
-      nominal: data.nominal,
+      provider: values.provider,
+      no_hp: values.no_hp,
+      nominal: values.nominal,
       status: "Pending",
       catatan: data.catatan || "-",
     });
-    initdata();
+    resetForm();
   } else {
     // Carikan index dari todo.data yang akan diedit
     const i = data.data.findIndex((o) => o.id === data.selected.id);
     // Ubah data pada index tersebut
     data.data[i] = {
       tanggal: new Date().toISOString(),
-      provider: data.provider,
-      no_hp: data.no_hp,
-      nominal: data.nominal,
-      catatan: data.catatan || "-",
+      provider: values.provider,
+      no_hp: values.no_hp,
+      nominal: values.nominal,
+      catatan: values.catatan || "-",
       status: data.status,
     };
     // Reset
+    resetForm();
     initdata();
   }
-}
+};
 const menampilkandata = computed(() => {
   return data.data;
 });
+const schema = Yup.object().shape({
+  provider: Yup.string()
+    .required("provider wajib diisi")
+    .typeError("provider wajib di isi"),
+  no_hp: Yup.string()
+    .min(10, "NO Hp minimal 10 karakter")
+    .max(13, "NO Hp maxsimal 13 karakter")
+    .matches(/^[0-9]+$/, "NO Hp harus berupa angka")
+    .required("NO Hp wajib di isi")
+    .typeError("NO Hp harus berupa angka"),
+  nominal: Yup.number("Nominal harus berupa angka")
+    .required("Nominal wajib di isi")
+    .min(10000, "minimal pembelian 10.000")
+    .typeError("nominal harus berupa angka"),
+  textarea: Yup.string().max(100, "Maxsimal 100 kata"),
+});
 const initdata = () => {
-  data.provider = null;
-  data.no_hp = null;
-  data.nominal = null;
-  data.catatan = null;
-  data.status = null;
+  // data.provider = null;
+  // data.no_hp = null;
+  // data.nominal = null;
+  // data.catatan = null;
+  // data.status = null;
   data.selected = {};
   data.mode = "add";
 };
@@ -89,7 +108,7 @@ const filterdata = computed(() => {
       }
     }
     if (data.search.cari) {
-      if (!item.no_hp.startsWith(data.search.cari)) {
+      if (!item.no_hp.match(data.search.cari)) {
         return false;
       }
     }
@@ -112,44 +131,65 @@ watchEffect(() => {
       <div class="left">
         <h3>📳Beli Pulsa</h3>
         <h3>Provider</h3>
-        <form @submit.prevent="tambah">
-          <select v-model="data.provider">
-            <option :value="null">pilih provider</option>
+        <Form @submit="tambah" :validation-schema="schema" v-slot="{ errors }">
+          <Field
+            as="select"
+            v-model="data.provider"
+            :class="{ 'is-invalid': errors.provider }"
+            name="provider"
+            id="provider"
+          >
+            <option value="">Pilih Provider</option>
             <option value="Telkomsel">Telkomsel</option>
             <option value="Exsis">Exsis</option>
-            <option value="Smartfrent">Smartfren</option>
+            <option value="Smartfren">Smartfren</option>
             <option value="Xl">Xl</option>
             <option value="M3">M3</option>
-          </select>
+          </Field>
+          <ErrorMessage name="provider" class="invalid-feedback"></ErrorMessage>
           <h3>NO.hp</h3>
           <div class="input-group mb-3">
-            <span class="input-group-text">Rp</span>
-            <input
+            <span class="input-group-text">+62</span>
+            <Field
               type="text"
               v-model="data.no_hp"
+              id="no_hp"
+              name="no_hp"
+              :class="{ 'is-invalid': errors.no_hp }"
               class="form-control"
               aria-label="Dollar amount (with dot and two decimal places)"
             />
+            <ErrorMessage name="no_hp" class="invalid-feedback"></ErrorMessage>
           </div>
           <h3>Nominal Pulsa</h3>
           <div class="input-group mb-3">
-            <span class="input-group-text">+62</span>
-            <input
+            <span class="input-group-text">Rp</span>
+            <Field
               type="number"
               v-model="data.nominal"
+              :class="{ 'is-invalid': errors.nominal }"
+              name="nominal"
+              id="nominal"
               class="form-control"
               aria-label="Dollar amount (with dot and two decimal places)"
             />
+            <ErrorMessage
+              name="nominal"
+              class="invalid-feedback"
+            ></ErrorMessage>
           </div>
           <h3>Catatan</h3>
-          <textarea
+          <Field
             v-model="data.catatan"
+            as="textarea"
             name="catatan"
-            id=""
+            id="catatan"
             cols="30"
             rows="5"
+            :class="{ 'is-invalid': errors.nominal }"
             placeholder="Masukkan Catatan"
-          ></textarea>
+          ></Field>
+          <ErrorMessage name="catatan" class="invalid-feedback"></ErrorMessage>
           <div class="chek" style="display: flex" v-if="data.mode === 'edit'">
             <div class="form-check">
               <input
@@ -191,14 +231,7 @@ watchEffect(() => {
               </label>
             </div>
           </div>
-          <div
-            class="tombol"
-            style="
-              display: flex;
-              justify-content: space-around;
-              padding-top: 10px;
-            "
-          >
+          <div class="tombol">
             <button type="submit">
               {{ data.mode === "add" ? "simpan" : "edit" }}
             </button>
@@ -206,12 +239,13 @@ watchEffect(() => {
               Batal
             </button>
           </div>
-        </form>
+        </Form>
       </div>
       <div class="right">
         <div class="top">
           <input type="text" placeholder="🔎Cari" v-model="data.search.cari" />
           <select v-model="data.search.provider">
+            <option value="">Pilih Provider</option>
             <option value="Telkomsel">Telkomsel</option>
             <option value="Exsis">Exsis</option>
             <option value="Smartfren">Smartfren</option>
@@ -219,9 +253,10 @@ watchEffect(() => {
             <option value="M3">M3</option>
           </select>
           <select v-model="data.search.status">
-            <option value="Proses">Proses</option>
-            <option value="Sukses">Sukses</option>
-            <option value="Batal">Batal</option>
+            <option value="">Pilih Status</option>
+            <option value="Pending">pending</option>
+            <option value="Succes">Succes</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
           <button
             @click="
@@ -307,7 +342,7 @@ main {
 .left {
   border: 1px solid rgb(63, 61, 61);
   max-width: 20%;
-  max-height: 80vh;
+  height: auto;
   padding: 0 10px;
   border-radius: 20px;
 }

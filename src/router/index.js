@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Cv from "../components/Vitai.vue"
 import Home from "../router/Homenavigator.vue"
 import Pulsa from "../components/Tantepulsa.vue"
-import Contak from "../components/Perpusbuku.vue"
+import Perpus from "../components/Perpusbuku.vue"
 //dibawah ini import halamannya
 
 const routes = [
@@ -19,13 +19,27 @@ const routes = [
         component: Pulsa,
     },
     {
-        path: '/Contak',
-        component: Contak,
+        path: '/Perpus',
+        component: Perpus,
     },
     {
         path:"/list",
         name: "List",
-        component:() => import("../views/List.vue"),
+        component:() => import("../components/List.vue"),
+    },
+    {
+        path:"/databuku",
+        name:"Databuku",
+        component:() => import("../components/Databuku.vue"),
+    },
+    {
+        path:"/databuku/:id",
+        component:() => import("../components/Detailbuku.vue"),
+    },
+    {
+        path:"/tambahbuku",
+        name:"tambahbuku",
+        component:() => import("../components/Tambahbuku.vue"),
     },
     // {
     //     path:"/detail",

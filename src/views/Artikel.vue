@@ -3,7 +3,7 @@ import ArticleList from "../components/ArticleList.vue";
 </script>
 <template>
   <Suspense>
-    <template #default>
+    <template>
       <ArticleList />
     </template>
   </Suspense>
